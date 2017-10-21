@@ -19,7 +19,6 @@ services:
             memlock: -1
             nofile: 100000
             nproc: 32768
-            
     youtrack:
         image: esycat/youtrack
         container_name: youtrack
@@ -34,7 +33,6 @@ services:
             - /etc/timezone:/etc/timezone:ro
             - youtrack-data:/var/lib/youtrack
             - youtrack-conf:/opt/youtrack/conf
-            
     upsource:
         image: esycat/upsource
         container_name: upsource
@@ -51,7 +49,6 @@ services:
             memlock: -1
             nofile: 100000
             nproc: 32768
-            
     database:
         image: postgres:9.4
         restart: always
@@ -60,11 +57,12 @@ services:
     nginx-proxy:
         image: jwilder/nginx-proxy
         container_name: nginx-proxy
-        restart: always   
+        restart: always
         ports:
             - "80:80"
         volumes:
-            - "/var/run/docker.sock:/tmp/docker.sock:ro"
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            
 volumes:
     hub-data:
     hub-conf:
