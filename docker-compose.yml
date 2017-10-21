@@ -33,3 +33,4 @@ services:
             - DOMAIN
 volumes:
     hub-data:
+    database-data:
