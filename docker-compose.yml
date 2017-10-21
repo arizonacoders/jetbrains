@@ -5,52 +5,32 @@ services:
         image: esycat/jetbrains-hub
         container_name: jetbrains-hub
         restart: always
+        environment:
+            - VIRTUAL_HOST=hub.professionalconnection.biz
+            - APP_PORT=80
         links:
             - database
-        ports:
-            - 8081:8080
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /etc/timezone:/etc/timezone:ro
             - hub-data:/var/lib/hub
             - hub-conf:/opt/hub/conf
-    upsource:
-        image: esycat/upsource
-        container_name: upsource
-        restart: always
-        links:
-            - database
-        ports:
-            - 8083:8080
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-            - /etc/timezone:/etc/timezone:ro
-            - upsource-data:/var/lib/upsource
-            - upsource-conf:/opt/upsource/conf
         ulimits:
             memlock: -1
             nofile: 100000
-            nproc: 32768
-            
-            
+            nproc: 32768      
     database:
         image: postgres:9.4
         restart: always
         volumes:
             - database-data:/var/lib/postgresql/data
-    nginx:
-        image: nginx
-        restart: always
+    nginx-proxy:
+        image: jwilder/nginx-proxy
+        container_name: nginx-proxy
         ports:
             - "80:80"
-        links:
-            - hub
-            - upsource
-        volumes:
-            - ./:/src
-        command: ./src/scripts/run_nginx.sh
-        environment:
-            - DOMAIN
+      volumes:
+          - /var/run/docker.sock:/tmp/docker.sock:ro
             
 volumes:
     hub-data:
