@@ -36,12 +36,11 @@ http {
     client_max_body_size        0;
 
     server {
+        listen 80;
         server_name  hub.${DOMAIN} www.hub.${DOMAIN};
-        listen       80;
-        listen       443 ssl;
-
+        
         location / {        
-            proxy_pass              http://hub:8081;
+            proxy_pass              http://localhost:8081;
             proxy_redirect          http://hub.${DOMAIN}/ /;        
             proxy_set_header        X-Forwarded-Host ${DOLLAR}host;
             proxy_set_header        X-Forwarded-Server ${DOLLAR}host;
@@ -52,13 +51,11 @@ http {
     }
     
     server {
+        listen 80;
         server_name upsource.${DOMAIN};
 
-        listen 80;
-        listen 443 ssl;
-
         location / {
-            proxy_pass http://upsource:8081;
+            proxy_pass http://localhost:8083;
             proxy_redirect http://upsource.${DOMAIN}/ /;
             proxy_set_header        X-Forwarded-Host ${DOLLAR}host;
             proxy_set_header        X-Forwarded-Server ${DOLLAR}host;
