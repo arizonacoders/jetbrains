@@ -41,7 +41,7 @@ http {
         listen       443 ssl;
 
         location / {        
-            proxy_pass              http://localhost:8081;
+            proxy_pass              http://hub.${DOMAIN}:8081;
             proxy_redirect          http://hub.${DOMAIN}/ /;        
             proxy_set_header        X-Forwarded-Host ${DOLLAR}host;
             proxy_set_header        X-Forwarded-Server ${DOLLAR}host;
