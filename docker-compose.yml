@@ -14,6 +14,25 @@ services:
             - /etc/timezone:/etc/timezone:ro
             - hub-data:/var/lib/hub
             - hub-conf:/opt/hub/conf
+    upsource:
+        image: esycat/upsource
+        container_name: upsource
+        restart: always
+        links:
+            - database
+        ports:
+            - 8083:8080
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - upsource-data:/var/lib/upsource
+            - upsource-conf:/opt/upsource/conf
+        ulimits:
+            memlock: -1
+            nofile: 100000
+            nproc: 32768
+            
+            
     database:
         image: postgres:9.4
         restart: always
@@ -26,12 +45,16 @@ services:
             - "80:80"
         links:
             - hub
+            - upsource
         volumes:
             - ./:/src
         command: ./src/scripts/run_nginx.sh
         environment:
             - DOMAIN
+            
 volumes:
     hub-data:
     hub-conf:
+    upsource-data:
+    upsource-conf:
     database-data:
