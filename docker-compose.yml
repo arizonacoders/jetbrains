@@ -12,8 +12,8 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /etc/timezone:/etc/timezone:ro
-            - hub-data/var/lib/hub:/var/lib/hub
-            - hub-data/opt/hub/conf:/opt/hub/conf
+            - hub-data:/var/lib/hub
+            - hub-conf:/opt/hub/conf
     database:
         image: postgres:9.4
         restart: always
@@ -33,4 +33,5 @@ services:
             - DOMAIN
 volumes:
     hub-data:
+    hub-conf:
     database-data:
