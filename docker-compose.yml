@@ -6,7 +6,7 @@ services:
         container_name: jetbrains-hub
         restart: always
         environment:
-            - VIRTUAL_HOST="${HUB_SUBDOMAIN:-hub}.${DOMAIN}
+            - VIRTUAL_HOST=${HUB_SUBDOMAIN:-hub}.${DOMAIN}
             - APP_PORT=80
         links:
             - database
@@ -18,7 +18,37 @@ services:
         ulimits:
             memlock: -1
             nofile: 100000
-            nproc: 32768      
+            nproc: 32768
+    youtrack:
+        image: esycat/youtrack
+        container_name: youtrack
+        restart: always
+        environment:
+            - VIRTUAL_HOST=${YOUTRACK_SUBDOMAIN:-track}.${DOMAIN}
+            - APP_PORT=80
+        links:
+            - database
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - youtrack-data:/var/lib/youtrack
+            - youtrack-conf:/opt/youtrack/conf
+    upsource:
+        image: esycat/upsource
+        container_name: upsource
+        restart: always
+        environment:
+            - VIRTUAL_HOST=${UPSOURCE_SUBDOMAIN:-source}.${DOMAIN}
+            - APP_PORT=80
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - upsource-data:/var/lib/upsource
+            - upsource-conf:/opt/upsource/conf
+        ulimits:
+            memlock: -1
+            nofile: 100000
+            nproc: 32768
     database:
         image: postgres:9.4
         restart: always
@@ -37,4 +67,6 @@ volumes:
     hub-conf:
     upsource-data:
     upsource-conf:
+    youtrack-data:
+    youtrack-conf:
     database-data:
