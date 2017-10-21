@@ -25,9 +25,7 @@ services:
         ports:
             - "80:80"
         links:
-            - jira
-            - confluence
-            - bitbucket
+            - hub
         volumes:
             - ./:/src
         command: ./src/scripts/run_nginx.sh
