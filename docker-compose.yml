@@ -19,6 +19,9 @@ services:
             memlock: -1
             nofile: 100000
             nproc: 32768
+        networks:
+            - public
+            
     youtrack:
         image: esycat/youtrack
         container_name: youtrack
@@ -33,6 +36,9 @@ services:
             - /etc/timezone:/etc/timezone:ro
             - youtrack-data:/var/lib/youtrack
             - youtrack-conf:/opt/youtrack/conf
+        networks:
+            - public
+            
     upsource:
         image: esycat/upsource
         container_name: upsource
@@ -49,6 +55,9 @@ services:
             memlock: -1
             nofile: 100000
             nproc: 32768
+        networks:
+            - public
+            
     database:
         image: postgres:9.4
         restart: always
@@ -65,6 +74,12 @@ services:
             - "/var/run/docker.sock:/tmp/docker.sock:ro"
         environment:
             - LETSENCRYPT_EMAIL=admin@professionalconnection.biz
+        networks:
+            - public
+networks:
+  public:
+    external:
+       name: public
     
 volumes:
     hub-data:
