@@ -6,7 +6,7 @@ services:
         container_name: jetbrains-hub
         restart: always
         environment:
-            - VIRTUAL_HOST=hub.professionalconnection.biz
+            - VIRTUAL_HOST="${HUB_SUBDOMAIN:-hub}.${DOMAIN}
             - APP_PORT=80
         links:
             - database
