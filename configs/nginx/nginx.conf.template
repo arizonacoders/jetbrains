@@ -41,7 +41,7 @@ http {
         listen       443 ssl;
 
         location / {        
-            proxy_pass              http://hub.${DOMAIN}:8081;
+            proxy_pass              http://hub:8081;
             proxy_redirect          http://hub.${DOMAIN}/ /;        
             proxy_set_header        X-Forwarded-Host ${DOLLAR}host;
             proxy_set_header        X-Forwarded-Server ${DOLLAR}host;
@@ -50,4 +50,21 @@ http {
             proxy_set_header        Host        ${DOLLAR}host;
         }
     }
+    
+    server {
+        server_name upsource.${DOMAIN};
+
+        listen 80;
+        listen 443 ssl;
+
+        location / {
+            proxy_pass http://upsource:8081;
+            proxy_redirect http://upsource.${DOMAIN}/ /;
+            proxy_set_header        X-Forwarded-Host ${DOLLAR}host;
+            proxy_set_header        X-Forwarded-Server ${DOLLAR}host;
+            proxy_set_header        X-Forwarded-For ${DOLLAR}remote_addr;
+            proxy_set_header        X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header        Host        ${DOLLAR}host;
+    }
+}
 }
