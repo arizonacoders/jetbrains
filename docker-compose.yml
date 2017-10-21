@@ -9,6 +9,7 @@ services:
             - VIRTUAL_HOST=${HUB_SUBDOMAIN:-hub}.${DOMAIN}
             - APP_PORT=443
             - VIRTUAL_PROTO=https
+            - VIRTUAL_PORT=443
         links:
             - database
         volumes:
