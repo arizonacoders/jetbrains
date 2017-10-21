@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+    hub:
+        image: esycat/jetbrains-hub
+        container_name: jetbrains-hub
+        restart: always
+        links:
+            - database
+        ports:
+            - 8081:8080
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - hub-data/var/lib/hub:/var/lib/hub
+            - hub-data/opt/hub/conf:/opt/hub/conf
+    database:
+        image: postgres:9.4
+        restart: always
+        volumes:
+            - database-data:/var/lib/postgresql/data
+    nginx:
+        image: nginx
+        restart: always
+        ports:
+            - "80:80"
+        links:
+            - jira
+            - confluence
+            - bitbucket
+        volumes:
+            - ./:/src
+        command: ./src/scripts/run_nginx.sh
+        environment:
+            - DOMAIN
+volumes:
+    hub-data:
